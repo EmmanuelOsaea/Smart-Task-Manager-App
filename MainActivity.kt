@@ -12,6 +12,11 @@ import com.example.taskmanager.ui.components.TaskAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.widget.EditText
 
+import com.smarttaskmanager.utils.DateUtils
+
+val formattedDate = DateUtils.formatDueDate(System.currentTimeMillis())
+binding.tvDueDate.text = formattedDate
+
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: TaskViewModel by viewModels()
