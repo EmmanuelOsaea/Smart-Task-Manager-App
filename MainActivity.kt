@@ -33,7 +33,13 @@ class MainActivity : AppCompatActivity() {
         binding.fabAddTask.setOnClickListener { showAddTaskDialog() }
     }
 
-    private fun showAddTaskDialog() {
+      private fun handleTaskClick(t: TaskEntity) {
+        // If checkbox toggled it will come here; update it
+        vm.update(t)
+    }
+    
+    
+  private fun showAddTaskDialog() {
         val inputTitle = EditText(this)
         inputTitle.hint = "Enter task title"
         MaterialAlertDialogBuilder(this)
