@@ -1,4 +1,5 @@
 package com.example.taskmanager
+package com.example.smarttask.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
