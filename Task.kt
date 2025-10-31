@@ -8,6 +8,6 @@ data class Task(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val description: String?,
-    val dueDate: Long,
+    val dueAt: Long,
     val isCompleted: Boolean = false
 )
