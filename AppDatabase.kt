@@ -8,3 +8,5 @@ import com.smarttaskmanager.model.Task
 abstract class AppDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
 }
+
+
