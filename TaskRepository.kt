@@ -1,8 +1,12 @@
-package com.example.smarttaskmanager.data
+package com.smarttaskmanager.repository
 
+import android.content.Context
 import androidx.room.Database
-import androidx.room.RoomDatabase
+import androidx.room.Room
 import com.smarttaskmanager.model.Task
+import com.smarttaskmanager.data.AppDatabase
+import kotlinx.coroutines.flow.Flow
+import androidx.room.Room
 
 class TaskRepository(private val dao: TaskDao) {
     val allTasks = dao.getAllTasks()
