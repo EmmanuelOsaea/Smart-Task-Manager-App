@@ -22,3 +22,11 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun delete(task: Task) = viewModelScope.launch { repository.delete(task) }
     fun update(task: Task) = viewModelScope.launch { repository.update(task) }
 }
+
+val allTasks: LiveData<List<Task>>
+
+    init {
+        val dao = TaskDatabase.getDatabase(application).taskDao()
+        repository = TaskRepository(dao)
+        allTasks = repository.allTasks
+    }
