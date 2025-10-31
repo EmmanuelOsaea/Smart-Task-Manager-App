@@ -8,7 +8,7 @@ import com.smarttaskmanager.model.Task
 @Dao
 interface TaskDao {
     
-@Query("SELECT * FROM tasks ORDER BY dueDate ASC")
+@Query("SELECT * FROM tasks ORDER BY dueAt ASC")
     fun getAllTasks(): Flow<List<Task>>
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -19,4 +19,9 @@ interface TaskDao {
 
     @Update
     suspend fun updateTask(task: Task)
+}
+
+// ✅ Toggle completion status
+    @Query("UPDATE tasks SET isCompleted = :isDone WHERE id = :taskId")
+    suspend fun updateStatus(taskId: Int, isDone: Boolean)
 }
