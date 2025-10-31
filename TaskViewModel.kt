@@ -30,3 +30,8 @@ val allTasks: LiveData<List<Task>>
         repository = TaskRepository(dao)
         allTasks = repository.allTasks
     }
+
+    fun toggleStatus(taskId: Int, isDone: Boolean) = viewModelScope.launch {
+        repository.toggleTaskStatus(taskId, isDone)
+    }
+}
