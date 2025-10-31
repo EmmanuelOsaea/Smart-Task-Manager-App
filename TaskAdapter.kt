@@ -7,7 +7,7 @@ import com.example.smarttask.data.TaskEntity
 import com.example.smarttask.databinding.ItemTaskBinding
 
 class TaskAdapter(private var tasks: List<TaskEntity>, private val onClick: (TaskEntity)->Unit) :
-    RecyclerView.Adapter<TaskAdapter.VH>() {
+    RecyclerView.Adapter<TaskAdapter.Tas.vh>() {
 
     inner class VH(val b: ItemTaskBinding): RecyclerView.ViewHolder(b.root)
 
@@ -16,7 +16,9 @@ class TaskAdapter(private var tasks: List<TaskEntity>, private val onClick: (Tas
         return VH(b)
     }
 
-    override fun onBindViewHolder(holder: VH, position: Int) {
+    override fun getItemCount() = tasks.size
+   
+       override fun onBindViewHolder(holder: VH, position: Int) {
         val t = tasks[position]
         holder.b.tvTitle.text = t.title
         holder.b.tvDetails.text = t.details
@@ -33,3 +35,17 @@ class TaskAdapter(private var tasks: List<TaskEntity>, private val onClick: (Tas
     fun update(newList: List<TaskEntity>) { tasks = newList; notifyDataSetChanged() }
 }
 
+holder.binding.taskTitle.text = task.title
+        holder.binding.taskDueAt.text = "Due: ${Date(task.dueAt)}"
+        holder.binding.checkComplete.isChecked = task.isCompleted
+
+        holder.binding.checkComplete.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.toggleStatus(task.id, isChecked)
+        }
+    }
+
+    fun updateTasks(newTasks: List<Task>) {
+        tasks = newTasks
+        notifyDataSetChanged()
+    }
+}
