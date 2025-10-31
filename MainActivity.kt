@@ -1,5 +1,6 @@
 package com.example.taskmanager
 package com.example.smarttask.ui
+package com.smarttaskmanager
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -11,8 +12,10 @@ import com.example.taskmanager.ui.TaskViewModel
 import com.example.taskmanager.ui.components.TaskAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.widget.EditText
-
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import com.smarttaskmanager.utils.DateUtils
+import java.util.*
 
 val formattedDate = DateUtils.formatDueDate(System.currentTimeMillis())
 binding.tvDueDate.text = formattedDate
@@ -25,8 +28,57 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
 
+              tvDueDate = findViewById(R.id.tvDueDate)
+        val btnPickDate = findViewById<Button>(R.id.btnPickDate)
+        val btnSaveTask = findViewById<Button>(R.id.btnSaveTask)
+
+        // Display current timestamp
+        tvDueDate.text = "Due Date: ${DateUtils.formatDueDate(selectedTimestamp)}"
+
+        btnPickDate.setOnClickListener {
+            pickDateTime()
+        }
+
+        btnSaveTask.setOnClickListener {
+            // Save or update task using selectedTimestamp
+            val formatted = DateUtils.formatDueDate(selectedTimestamp)
+            tvDueDate.text = "Saved Due Date: $formatted"
+        }
+    }
+
+    private fun pickDateTime() {
+        val calendar = Calendar.getInstance()
+        DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                // Then show time picker
+                TimePickerDialog(
+                    this,
+                    { _, hour, minute ->
+                        calendar.set(Calendar.HOUR_OF_DAY, hour)
+                        calendar.set(Calendar.MINUTE, minute)
+
+                        selectedTimestamp = calendar.timeInMillis
+                        tvDueDate.text =
+                            "Due Date: ${DateUtils.formatDueDate(selectedTimestamp)}"
+                    },
+                    calendar.get(Calendar.HOUR_OF_DAY),
+                    calendar.get(Calendar.MINUTE),
+                    false
+                ).show()
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+        }
+       }
         adapter = TaskAdapter { task -> viewModel.delete(task) }
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
