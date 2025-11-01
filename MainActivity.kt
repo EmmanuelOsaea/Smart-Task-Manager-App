@@ -112,3 +112,26 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 }
+
+
+private fun scheduleReminder(taskTitle: String, dueTimeMillis: Long) {
+    val intent = Intent(this, ReminderReceiver::class.java)
+    intent.putExtra("TASK_TITLE", taskTitle)
+
+    val pendingIntent = PendingIntent.getBroadcast(
+        this,
+        taskTitle.hashCode(),
+        intent,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+    alarmManager.setExact(
+        AlarmManager.RTC_WAKEUP,
+        dueTimeMillis,
+        pendingIntent
+    )
+}
+
+scheduleReminder(taskTitle, selectedDueDate.timeInMillis)
+
