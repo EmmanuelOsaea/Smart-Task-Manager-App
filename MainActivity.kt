@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         val btnPickDate = findViewById<Button>(R.id.btnPickDate)
         val btnSaveTask = findViewById<Button>(R.id.btnSaveTask)
 
+        
         // Display current timestamp
         tvDueDate.text = "Due Date: ${DateUtils.formatDueDate(selectedTimestamp)}"
 
@@ -45,6 +46,16 @@ class MainActivity : AppCompatActivity() {
             // Save or update task using selectedTimestamp
             val formatted = DateUtils.formatDueDate(selectedTimestamp)
             tvDueDate.text = "Saved Due Date: $formatted"
+
+val channel = NotificationChannel(
+    "task_channel",
+    "Task Reminders",
+    NotificationManager.IMPORTANCE_HIGH
+)
+val manager = getSystemService(NotificationManager::class.java)
+manager.createNotificationChannel(channel)
+
+            
         }
     }
 
