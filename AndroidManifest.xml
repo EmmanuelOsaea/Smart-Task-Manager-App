@@ -1,10 +1,30 @@
-<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-<manifest package="com.example.smarttask" xmlns:android="http://schemas.android.com/apk/res/android">
-    <application android:label="SmartTask" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-        <activity android:name=".ui.MainActivity">
-            <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
+  <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.emmanuel.smarttaskmanager">
+   <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Smart Task Manager"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Material3.DayNight.NoActionBar">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-   <receiver android:name=".BroadcastReceiver" android:exported="false" />
+
+        <receiver android:name=".BootReceiver" android:enabled="true" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+         <receiver android:name=".BroadcastReceiver" android:exported="false" />
     </application>
-</manifest>
-<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+</manifest>           
