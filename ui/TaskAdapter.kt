@@ -1,26 +1,43 @@
 package com.example.smarttask.ui
 
-import android.app.AlertDialog
-import android.content.Context
 import android.view.LayoutInflater
-import android.widget.ArrayAdapter
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.example.smarttask.data.TaskEntity
-import com.example.smarttask.databinding.DialogAddEditTaskBinding
+import com.example.smarttask.databinding.ItemTaskBinding
 
-class AddEditTaskDialog(private val ctx: Context, private val onSave: (TaskEntity)->Unit) {
-    fun show() {
-        val b = DialogAddEditTaskBinding.inflate(LayoutInflater.from(ctx))
-        val priorities = listOf("High","Medium","Low")
-        b.spinnerPriority.adapter = ArrayAdapter(ctx, android.R.layout.simple_spinner_item, priorities)
 
-        AlertDialog.Builder(ctx)
-            .setTitle("Add Task")
-            .setView(b.root)
-            .setPositiveButton("Save") { _, _ ->
-                val t = TaskEntity(title = b.etTitle.text.toString(), details = b.etDetails.text.toString(), priority = b.spinnerPriority.selectedItem.toString())
-                onSave(t)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+
+class TaskAdapter(
+    private val viewModel: TaskViewModel
+) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+
+    private var tasks = listOf<Task>()
+
+    inner class TaskViewHolder(val binding: ItemTaskBinding)
+        : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+        val binding = ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TaskViewHolder(binding)
+    }
+
+    override fun getItemCount() = tasks.size
+
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        val task = tasks[position]
+        holder.binding.taskTitle.text = task.title
+        holder.binding.taskDueAt.text = "Due: ${Date(task.dueAt)}"
+        holder.binding.checkComplete.isChecked = task.isCompleted
+
+        holder.binding.checkComplete.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.toggleStatus(task.id, isChecked)
+        }
+    }
+
+    fun updateTasks(newTasks: List<Task>) {
+        tasks = newTasks
+        notifyDataSetChanged()
     }
 }
+
