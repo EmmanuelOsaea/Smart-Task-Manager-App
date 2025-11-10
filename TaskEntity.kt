@@ -8,7 +8,7 @@ data class TaskEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val details: String = "",
-    val priority: String = "Medium", // High / Medium / Low
+    val priority: String = "Medium",
     val dueAt: Long? = null,
     val isCompleted: Boolean = false,
     val createdAt: Long = System.currentTimeMillis()
